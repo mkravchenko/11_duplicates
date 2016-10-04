@@ -14,7 +14,7 @@ dir2.1->child_dir2.2->chid_dir2.3<br />
 # How to run:<br />
 1. Run the script:<br />
 python duplicates.py \<path_to_first_folder\> \<path_to_second_folder\><br />
-2. Program will be print the path and size(in bytes) for every deleted file <br />
-or if duplicates not exists will be print: "Nothing to delete!"
+2. Program will print the path and size(in bytes) for every deleted file <br />
+or if duplicates not exists will print: "Nothing to delete!"
 
 
