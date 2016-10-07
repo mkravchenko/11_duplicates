@@ -2,7 +2,7 @@ import os
 import sys
 
 
-def are_files_duplicates(file_path_1, file_path_2):
+def get_duplicates_files(file_path_1, file_path_2):
     if not os.path.exists(file_path_1) and not os.path.exists(file_path_2):
         return None
 
@@ -12,33 +12,25 @@ def are_files_duplicates(file_path_1, file_path_2):
             for name in files:
                 path_file = os.path.join(root, name)
                 size = os.path.getsize(path_file)
-                naw_name = name + "#" + str(size)
-                if naw_name not in map_files_dir.keys():
-                    map_files_dir[naw_name] = [{"path": path_file}, {"size": size}, []]
-                elif name in map_files_dir.keys() and size != map_files_dir[name][1]["size"]:
-                    map_files_dir[naw_name] = [{"path": path_file}, {"size": size}, []]
+                new_name = "File '{0}' with size {1} bytes".format(name, size)
+                if new_name not in map_files_dir:
+                    map_files_dir[new_name] = [path_file]
                 else:
-                    map_files_dir[naw_name][2].append(path_file)
+                    map_files_dir[new_name].append(path_file)
     return map_files_dir
 
 
 def print_duplicated_file_names(map_files_dir):
-    if map_files_dir:
-        print("Duplicated files: ")
-        for key, name in map_files_dir.items():
-            if name[2]:
-                file_name = key.split("#")[0]
-                print("\nFile: " + file_name + " with size " + str(name[1]["size"])
-                      + " bates is duplicated:")
-                print(name[0]["path"])
-                for path in name[2]:
-                    print(path)
-    else:
-        print("Nothing to delete!")
+    print("Duplicated files: ")
+    for names, list_of_paths in map_files_dir.items():
+        if len(list_of_paths) >= 2:
+            print("\n{} is duplicated:".format(names))
+            for path in list_of_paths:
+                print("{}".format(path))
 
 
 if __name__ == '__main__':
     file_path1 = sys.argv[1]
     file_path2 = sys.argv[2]
-    m = are_files_duplicates(file_path1, file_path2)
-    print_duplicated_file_names(m)
+    duplicated_files = get_duplicates_files(file_path1, file_path2)
+    print_duplicated_file_names(duplicated_files)
